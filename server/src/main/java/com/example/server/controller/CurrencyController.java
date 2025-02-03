@@ -20,4 +20,9 @@ public class CurrencyController {
     public List<Currency> getCurrencies() {
         return currencyService.getCurrencies();
     }
+
+    @DeleteMapping("/cache")
+    public void clearCurrencyCache() {
+        currencyService.clearCache();
+    }
 }
