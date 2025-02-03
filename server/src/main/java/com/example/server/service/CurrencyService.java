@@ -1,8 +1,9 @@
 package com.example.server.service;
 
-import com.example.currencyconverter.model.Currency;
+import com.example.server.model.Currency;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
@@ -13,17 +14,20 @@ import java.util.Map;
 public class CurrencyService {
     @Value("${swop.api.key}")
     private String apiKey;
-    private static final String SWOP_API_URL = "https://swop.cx/rest/currencies?api-key=" + API_KEY;
+    private static final String SWOP_API_URL = "https://swop.cx/rest/currencies?api-key=";
 
     public List<Currency> getCurrencies() {
         RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<Map> response = restTemplate.getForEntity(SWOP_API_URL, Map.class);
-        
-        Map<String, Object> currencies = (Map<String, Object>) response.getBody().get("currencies");
-        List<Currency> currencyList = new ArrayList<>();
-        
-        currencies.forEach((code, name) -> currencyList.add(new Currency(code, name.toString())));
+        String url = SWOP_API_URL + apiKey;
 
-        return currencyList;
+        ResponseEntity<Currency[]> response = restTemplate.getForEntity(url, Currency[].class);
+
+        Currency[] currenciesArray = response.getBody();
+        
+        if (currenciesArray != null) {
+            return List.of(currenciesArray);
+        }
+
+        return List.of();
     }
 }
