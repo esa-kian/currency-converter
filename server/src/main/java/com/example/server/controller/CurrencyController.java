@@ -21,8 +21,11 @@ public class CurrencyController {
         return currencyService.getCurrencies();
     }
 
-    @DeleteMapping("/cache")
-    public void clearCurrencyCache() {
-        currencyService.clearCache();
+    @GetMapping("/exchange/{source}/{target}")
+    public Double convertCurrency(
+            @PathVariable String source,
+            @PathVariable String target,
+            @RequestParam Double amount) {
+        return currencyService.convertCurrency(source, target, amount);
     }
 }

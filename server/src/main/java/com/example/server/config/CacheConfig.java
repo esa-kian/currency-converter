@@ -14,10 +14,12 @@ public class CacheConfig {
 
     @Bean
     public CaffeineCacheManager cacheManager() {
-        CaffeineCacheManager cacheManager = new CaffeineCacheManager("currencies");
+        CaffeineCacheManager cacheManager = new CaffeineCacheManager("currencies", "exchangeRates");
+        
         cacheManager.setCaffeine(Caffeine.newBuilder()
                 .expireAfterWrite(60, TimeUnit.MINUTES)
-                .maximumSize(150));
+                .maximumSize(500));
+                
         return cacheManager;
     }
 }
