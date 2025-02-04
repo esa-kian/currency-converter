@@ -1,19 +1,52 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TextField, Button, MenuItem, Container, Typography } from "@mui/material";
+import { getCurrencies } from "../services/currencyService";
 
-const currencies = ["USD", "EUR", "GBP", "JPY", "CAD"]; // Temporary list
+interface Currency {
+    code: string;
+    name: string;
+}
 
 const CurrencyConverter: React.FC = () => {
+    const [currencies, setCurrencies] = useState<Currency[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string | null>(null);
     const [sourceCurrency, setSourceCurrency] = useState("USD");
     const [targetCurrency, setTargetCurrency] = useState("EUR");
     const [amount, setAmount] = useState<string>("");
     const [convertedAmount, setConvertedAmount] = useState<number | null>(null);
+
+    useEffect(() => {
+        const fetchCurrencies = async () => {
+            try {
+                const data = await getCurrencies();
+                console.log(data, 'currencies');
+                setCurrencies(data);
+
+                setLoading(false);
+            } catch (err) {
+                setError("Failed to load currencies.");
+                setLoading(false);
+            }
+        };
+
+        fetchCurrencies();
+    }, []);
 
     const handleConvert = (e: React.FormEvent) => {
         e.preventDefault();
         // TODO: Call the backend API to get the converted value
         console.log("Converting:", amount, sourceCurrency, "to", targetCurrency);
     };
+
+
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+
+    if (error) {
+        return <div>{error}</div>;
+    }
 
     return (
         <Container maxWidth="sm">
@@ -29,11 +62,12 @@ const CurrencyConverter: React.FC = () => {
                     fullWidth
                     margin="normal"
                 >
-                    {currencies.map((currency) => (
-                        <MenuItem key={currency} value={currency}>
-                            {currency}
+                    {currencies.length > 0 ? currencies.map((currency) => (
+                        <MenuItem key={currency.code} value={currency.code}>
+                            {currency.name}
                         </MenuItem>
-                    ))}
+
+                    )) : ""}
                 </TextField>
 
                 <TextField
@@ -44,11 +78,11 @@ const CurrencyConverter: React.FC = () => {
                     fullWidth
                     margin="normal"
                 >
-                    {currencies.map((currency) => (
-                        <MenuItem key={currency} value={currency}>
-                            {currency}
+                    {currencies.length > 0 ? currencies.map((currency) => (
+                        <MenuItem key={currency.code} value={currency.code}>
+                            {currency.name}
                         </MenuItem>
-                    ))}
+                    )) : ""}
                 </TextField>
 
                 <TextField
