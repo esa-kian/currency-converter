@@ -6,6 +6,8 @@ import com.example.server.service.CurrencyService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.validation.annotation.Validated;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -15,6 +17,7 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:5173")
 public class CurrencyController {
     
+    private static final Logger logger = LoggerFactory.getLogger(CurrencyController.class);
     private final CurrencyService currencyService;
 
     public CurrencyController(CurrencyService currencyService) {
@@ -23,11 +26,21 @@ public class CurrencyController {
 
     @GetMapping
     public List<Currency> getCurrencies() {
+        logger.info("Fetching all currencies");
+
         return currencyService.getCurrencies();
     }
 
     @PostMapping("/convert")
-    public double convertCurrency(@Valid @RequestBody CurrencyConversionRequest request) {
-        return currencyService.convertCurrency(request.getSource(), request.getTarget(), request.getAmount());
+    public Double convertCurrency(@Valid @RequestBody CurrencyConversionRequest request) {
+        logger.info("Currency conversion requested: {} -> {} (Amount: {})", 
+            request.getSource(), request.getTarget(), request.getAmount());
+
+        Double result = currencyService.convertCurrency(request.getSource(), request.getTarget(), request.getAmount());
+
+        logger.info("Conversion result: {} -> {} (Amount: {}) = {}", 
+            request.getSource(), request.getTarget(), request.getAmount(), result);
+
+        return result;
     }
 }

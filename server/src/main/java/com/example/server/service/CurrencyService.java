@@ -72,6 +72,8 @@ public class CurrencyService {
     }
 
     public Double convertCurrency(String source, String target, Double amount) {
+        logger.debug("Starting conversion: {} -> {} (Amount: {})", source, target, amount);
+
         Map<String, Double> rates = getExchangeRates();
 
         String key = source + "_" + target;
@@ -81,6 +83,11 @@ public class CurrencyService {
         }
 
         double exchangeRate = rates.get(key);
-        return amount * exchangeRate;
+        double convertedAmount = amount * exchangeRate;
+
+        logger.info("Conversion completed: {} {} -> {} {} at rate {}", 
+            amount, source, convertedAmount, target, exchangeRate);
+
+        return convertedAmount;
     }
 }
