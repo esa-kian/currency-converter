@@ -3,12 +3,27 @@ import axios from "axios";
 const API_URL = 'http://localhost:8080/api';
 
 export const getCurrencies = async () => {
-    console.log(API_URL, 'api url');
-    
+
     try {
-        const response = await axios.get(API_URL+"/currencies");
-        console.log(response, 'server resp');
-        
+        const response = await axios.get(API_URL + "/currencies");
+
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching currencies", error);
+        throw error;
+    }
+};
+
+export const convertCurrency = async (source: string, target: string, amount: string) => {
+
+    try {
+        let data = {
+            source: source,
+            target: target,
+            amount: amount
+        }
+        const response = await axios.post(API_URL + "/currencies/convert", data);
+
         return response.data;
     } catch (error) {
         console.error("Error fetching currencies", error);

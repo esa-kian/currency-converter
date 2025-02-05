@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { TextField, Button, MenuItem, Container, Typography } from "@mui/material";
-import { getCurrencies } from "../services/currencyService";
+import { getCurrencies, convertCurrency } from "../services/currencyService";
 
 interface Currency {
     code: string;
@@ -11,8 +11,8 @@ const CurrencyConverter: React.FC = () => {
     const [currencies, setCurrencies] = useState<Currency[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
-    const [sourceCurrency, setSourceCurrency] = useState("USD");
-    const [targetCurrency, setTargetCurrency] = useState("EUR");
+    const [sourceCurrency, setSourceCurrency] = useState("EUR");
+    const [targetCurrency, setTargetCurrency] = useState("USD");
     const [amount, setAmount] = useState<string>("");
     const [convertedAmount, setConvertedAmount] = useState<number | null>(null);
 
@@ -20,7 +20,6 @@ const CurrencyConverter: React.FC = () => {
         const fetchCurrencies = async () => {
             try {
                 const data = await getCurrencies();
-                console.log(data, 'currencies');
                 setCurrencies(data);
 
                 setLoading(false);
@@ -33,9 +32,25 @@ const CurrencyConverter: React.FC = () => {
         fetchCurrencies();
     }, []);
 
+    const calculateCurrency = async () => {
+        setLoading(true);
+
+        try {
+            const data = await convertCurrency(sourceCurrency, targetCurrency, amount);
+            setConvertedAmount(data);
+
+            setLoading(false);
+        } catch (err) {
+            setError("Failed to load conversion.");
+            setLoading(false);
+        }
+
+    }
+
     const handleConvert = (e: React.FormEvent) => {
         e.preventDefault();
-        // TODO: Call the backend API to get the converted value
+
+        calculateCurrency()
         console.log("Converting:", amount, sourceCurrency, "to", targetCurrency);
     };
 
