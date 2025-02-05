@@ -12,6 +12,12 @@ public class ExchangeRate {
     @JsonProperty("quote")
     private double quote;
 
+    public ExchangeRate(String baseCurrency, String quoteCurrency, double quote) {
+        this.baseCurrency = baseCurrency;
+        this.quoteCurrency = quoteCurrency;
+        this.quote = quote;
+    }
+
     public String getBaseCurrency() {
         return baseCurrency;
     }
