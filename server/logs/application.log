@@ -296,3 +296,5 @@ java.lang.IllegalArgumentException: Invalid currency pair: GBP to EUR
 2025-02-05T11:23:43.761+02:00  INFO 78671 --- [server] [http-nio-8080-exec-2] c.e.server.service.CurrencyService       : Cache HIT for exchange rates
 2025-02-05T11:23:43.761+02:00  INFO 78671 --- [server] [http-nio-8080-exec-2] c.e.server.service.CurrencyService       : Conversion completed: 10.0 EUR -> 440093.75 IRR at rate 44009.375
 2025-02-05T11:23:43.762+02:00  INFO 78671 --- [server] [http-nio-8080-exec-2] c.e.s.controller.CurrencyController      : Conversion result: EUR -> IRR (Amount: 10.0) = $440,093.75
+2025-02-05T11:33:45.059+02:00  INFO 78671 --- [server] [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-02-05T11:33:45.074+02:00  INFO 78671 --- [server] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete

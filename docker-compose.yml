@@ -1,0 +1,42 @@
+version: "3.8"
+
+services:
+  backend:
+    build: ./server
+    container_name: currency-backend
+    ports:
+      - "8080:8080"
+    depends_on:
+      - redis
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      REDIS_HOST: redis
+      SWOP_API_KEY: ${SWOP_API_KEY}
+    networks:
+      - app-network
+    env_file:
+      - .env
+
+  frontend:
+    build: ./client
+    container_name: currency-frontend
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+  redis:
+    image: redis:alpine
+    container_name: currency-redis
+    ports:
+      - "6379:6379"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+
