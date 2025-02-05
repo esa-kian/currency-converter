@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 @Service
 public class CurrencyService {
@@ -71,7 +73,7 @@ public class CurrencyService {
         return ratesMap;
     }
 
-    public Double convertCurrency(String source, String target, Double amount) {
+    public String convertCurrency(String source, String target, Double amount) {
         logger.debug("Starting conversion: {} -> {} (Amount: {})", source, target, amount);
 
         Map<String, Double> rates = getExchangeRates();
@@ -88,6 +90,21 @@ public class CurrencyService {
         logger.info("Conversion completed: {} {} -> {} {} at rate {}", 
             amount, source, convertedAmount, target, exchangeRate);
 
-        return convertedAmount;
+        Locale targetLocale = getLocaleForCurrency(target);
+        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(targetLocale);
+        String formattedAmount = currencyFormatter.format(convertedAmount);
+
+        return formattedAmount;
+    }
+
+    private Locale getLocaleForCurrency(String currencyCode) {
+        return switch (currencyCode) {
+            case "USD" -> Locale.US;
+            case "EUR" -> Locale.GERMANY;
+            case "GBP" -> Locale.UK;
+            case "JPY" -> Locale.JAPAN;
+            case "INR" -> new Locale("hi", "IN");
+            default -> Locale.US;
+        };
     }
 }

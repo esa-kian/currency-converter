@@ -32,11 +32,11 @@ public class CurrencyController {
     }
 
     @PostMapping("/convert")
-    public Double convertCurrency(@Valid @RequestBody CurrencyConversionRequest request) {
+    public String convertCurrency(@Valid @RequestBody CurrencyConversionRequest request) {
         logger.info("Currency conversion requested: {} -> {} (Amount: {})", 
             request.getSource(), request.getTarget(), request.getAmount());
 
-        Double result = currencyService.convertCurrency(request.getSource(), request.getTarget(), request.getAmount());
+        String result = currencyService.convertCurrency(request.getSource(), request.getTarget(), request.getAmount());
 
         logger.info("Conversion result: {} -> {} (Amount: {}) = {}", 
             request.getSource(), request.getTarget(), request.getAmount(), result);

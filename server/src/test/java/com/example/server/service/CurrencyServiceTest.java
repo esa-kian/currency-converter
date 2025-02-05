@@ -43,7 +43,7 @@ class CurrencyServiceTest {
         mockRates.put("EUR_USD", 1.1);
         cacheManager.getCache("exchangeRates").put("rates", mockRates);
 
-        double convertedAmount = currencyService.convertCurrency("EUR", "USD", 100.0);
-        assertEquals(110.0, convertedAmount, 0.0001);
+        String convertedAmount = currencyService.convertCurrency("EUR", "USD", 100.0);
+        assertEquals("$110.00", convertedAmount);
     }
 }
