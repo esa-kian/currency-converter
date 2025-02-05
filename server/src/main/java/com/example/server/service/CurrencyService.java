@@ -75,6 +75,7 @@ public class CurrencyService {
         Map<String, Double> rates = getExchangeRates();
 
         String key = source + "_" + target;
+
         if (!rates.containsKey(key)) {
             throw new IllegalArgumentException("Invalid currency pair: " + source + " to " + target);
         }
