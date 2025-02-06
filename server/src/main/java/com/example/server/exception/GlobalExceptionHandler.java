@@ -3,7 +3,6 @@ package com.example.server.exception;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -33,7 +32,7 @@ public class GlobalExceptionHandler {
     public Map<String, String> handleGlobalException(Exception ex) {
         logger.error("Unexpected error occurred: {}", ex.getMessage(), ex);
         Map<String, String> response = new HashMap<>();
-        response.put("error", "An unexpected error occurred. Please try again.");
+        response.put("error", "An unexpected error occurred. " +  ex.getMessage());
         return response;
     }
 }
