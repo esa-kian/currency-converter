@@ -24,7 +24,7 @@ export const convertCurrency = async (source: string, target: string, amount: st
         }
         const response = await axios.post(API_URL + "/currencies/convert", data);
 
-        return response.data;
+        return response.data.convertedAmount;
     } catch (error) {
         console.error("Error fetching currencies", error);
         throw error;

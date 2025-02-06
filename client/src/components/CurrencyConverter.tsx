@@ -59,9 +59,7 @@ const CurrencyConverter: React.FC = () => {
         return <div>Loading...</div>;
     }
 
-    if (error) {
-        return <div>{error}</div>;
-    }
+
 
     return (
         <Container maxWidth="sm">
@@ -118,6 +116,13 @@ const CurrencyConverter: React.FC = () => {
             {convertedAmount !== null && (
                 <Typography variant="h6" marginTop={2}>
                     Converted Amount: {convertedAmount}
+                </Typography>
+            )}
+
+
+            {error !== null && (
+                <Typography variant="h6" marginTop={2}>
+                    Error: {error}
                 </Typography>
             )}
         </Container>
