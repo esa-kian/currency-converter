@@ -8,6 +8,7 @@ The Currency Converter is a web application that allows users to convert currenc
 - Convert an amount from one currency to another.
 - Cache exchange rates for optimized performance.
 - Dockerized environment for easy deployment.
+- Monitoring with Prometheus and Grafana
 
 ## Prerequisites
 Ensure you have the following installed:
@@ -112,11 +113,38 @@ Body:
 }
 ```
 
+## Monitoring with Prometheus and Grafana
+
+### Prometheus
+
+Prometheus is used to collect and store metrics. The backend exposes metrics at:
+
+📌 `http://localhost:8080/actuator/prometheus`
+
+Grafana
+
+Grafana provides a visual interface for monitoring metrics.
+
+- Access Grafana at: `http://localhost:3000`
+
+- Default login credentials:
+
+    - **Username:** admin
+
+    - **Password:** admin
+
+- Add Prometheus as a data source:
+
+    - URL: `http://localhost:9090`
+
+    - Access: `Browser`
+
 
 ## Technologies Used
 - **Backend:** Java 17, Spring Boot, Caffeine, Maven
 - **Frontend:** React.js, TypeScript, Vite
 - **Containerization:** Docker, Docker Compose
+- **Monitoring:** Prometheus, Grafana
 
 ## License
 This project is licensed under the MIT License.
