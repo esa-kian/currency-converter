@@ -18,7 +18,7 @@ const CurrencyConverter: React.FC = () => {
 
     useEffect(() => {
         const fetchCurrencies = async () => {
-            setError("");
+            setError(null);
 
             try {
                 const data = await getCurrencies();
@@ -37,7 +37,7 @@ const CurrencyConverter: React.FC = () => {
 
     const calculateCurrency = async () => {
         setLoading(true);
-        setError("");
+        setError(null);
 
         try {
             const data = await convertCurrency(sourceCurrency, targetCurrency, amount);
@@ -45,6 +45,7 @@ const CurrencyConverter: React.FC = () => {
 
             setLoading(false);
         } catch (err: any) {
+            setConvertedAmount(null);
 
             setError(err);
             setLoading(false);
@@ -127,7 +128,7 @@ const CurrencyConverter: React.FC = () => {
 
             {error !== null && (
                 <Typography variant="h6" marginTop={2}>
-                    Error: {error}
+                    {error + "!"}
                 </Typography>
             )}
         </Container>
