@@ -8,9 +8,9 @@ export const getCurrencies = async () => {
         const response = await axios.get(API_URL + "/currencies");
 
         return response.data;
-    } catch (error) {
+    } catch (error: any) {
         console.error("Error fetching currencies", error);
-        throw error;
+        throw error.response?.data?.message || "An unknown error occurred";
     }
 };
 
@@ -25,8 +25,16 @@ export const convertCurrency = async (source: string, target: string, amount: st
         const response = await axios.post(API_URL + "/currencies/convert", data);
 
         return response.data.convertedAmount;
-    } catch (error) {
-        console.error("Error fetching currencies", error);
-        throw error;
+    } catch (error: any) {
+        if (error.response?.data) {
+            const errors = error.response.data;
+
+            return Promise.reject(
+                Object.values(errors).join(" | ") || "An unknown error occurred"
+            );
+        }
+
+        return Promise.reject("An unknown error occurred");
+
     }
 };
